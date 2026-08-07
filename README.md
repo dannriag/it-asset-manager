@@ -21,6 +21,7 @@ Backend
 Database
 
 - Azure SQL Database
+### Note: The first use may take a moment while the free Azure SQL Serverless database starts up.
 
 Development
 
