@@ -23,6 +23,19 @@ app.use(
   })
 );
 
+
+
+function requireLogin(req, res, next) {
+  if (req.session.user) {
+    return next();
+  }
+  res.status(401).json({
+    message: "Unauthorized"
+  });
+}
+
+
+
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
@@ -31,6 +44,8 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+
+
 
 
 app.use("/api/assets", assetRoutes);

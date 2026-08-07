@@ -73,3 +73,22 @@ export async function deleteAsset(id) {
   return await response.json();
 
 }
+
+
+export async function getSession() {
+
+  const response = await fetch("/api/auth/session", {
+    credentials: "include",
+  });
+
+  return await response.json();
+}
+
+export async function logout() {
+
+  await fetch("/api/auth/logout", {
+    method: "POST",
+    credentials: "include",
+  });
+
+}

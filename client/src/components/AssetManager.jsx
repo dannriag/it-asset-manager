@@ -6,7 +6,12 @@ import {
   deleteAsset,
 } from "../services/api";
 
-function AssetManager() {
+import { logout } from "../services/api";
+
+function AssetManager({
+      user,
+      setUser,
+}) {
   const [serverStatus, setServerStatus] = useState("Checking...");
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -206,18 +211,53 @@ async function handleDelete(id) {
 
 
 
+async function handleLogout() {
+  await logout();
+  setUser(null);
+}
+
+
+
+
 
   return (
 
     <>
     <nav className="navbar navbar-dark bg-dark">
       <div className="container">
-        <span className="navbar-brand mb-0 h1">
-          IT Asset Manager
-        </span>
-        <span className="text-white">
-          ITMD 504 Final Project
-        </span>
+
+<span className="navbar-brand">
+
+IT Asset Manager
+
+</span>
+
+<div>
+
+<span className="text-white me-3">
+
+Welcome, {" "}
+
+<strong>
+    {user.FullName}
+</strong>
+
+</span>
+
+<button
+
+className="btn btn-outline-light btn-sm"
+
+onClick={handleLogout}
+
+>
+
+Logout
+
+</button>
+
+</div>
+
       </div>
     </nav>
 
