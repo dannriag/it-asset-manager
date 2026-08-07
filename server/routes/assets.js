@@ -23,4 +23,58 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  try {
+    const {
+      AssetName,
+      Category,
+      SerialNumber,
+      Status,
+      Location,
+    } = req.body;
+
+    const pool = await connectDB();
+
+    await pool
+      .request()
+      .input("AssetName", AssetName)
+      .input("Category", Category)
+      .input("SerialNumber", SerialNumber)
+      .input("Status", Status)
+      .input("Location", Location)
+      .query(`
+        INSERT INTO Assets
+        (
+          AssetName,
+          Category,
+          SerialNumber,
+          Status,
+          Location
+        )
+
+        VALUES
+        (
+          @AssetName,
+          @Category,
+          @SerialNumber,
+          @Status,
+          @Location
+        )
+      `);
+
+    res.status(201).json({
+      message: "Asset created successfully",
+    });
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      message: "Database error",
+    });
+
+  }
+});
+
 module.exports = router;
