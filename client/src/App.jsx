@@ -12,6 +12,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingAssetId, setEditingAssetId] = useState(null);
+  const [message, setMessage] = useState("");
 
   const [newAsset, setNewAsset] = useState({
     AssetName: "",
@@ -64,20 +65,58 @@ function App() {
 
 async function handleSave() {
 
+
+
+  if (
+
+  !newAsset.AssetName.trim() ||
+
+  !newAsset.Category.trim() ||
+
+  !newAsset.SerialNumber.trim() ||
+
+  !newAsset.Status.trim() ||
+
+  !newAsset.Location.trim()
+
+) {
+
+  alert("Please complete all fields.");
+
+  return;
+
+}
+
+
+
+
+
+
+
   try {
 
-    if (editingAssetId) {
+if (editingAssetId) {
 
-      await updateAsset(
-        editingAssetId,
-        newAsset
-      );
+    await updateAsset(editingAssetId, newAsset);
 
-    } else {
+    setMessage("Asset updated successfully.");
 
-      await createAsset(newAsset);
+    setTimeout(() => {
 
-    }
+    setMessage("");
+
+},3000);
+
+}
+else {
+
+    await createAsset(newAsset);
+
+    setMessage("Asset created successfully.");
+
+}
+
+
 
     await loadAssets();
 
@@ -145,6 +184,9 @@ async function handleDelete(id) {
   try {
 
     await deleteAsset(id);
+    setMessage("Asset deleted successfully.");
+
+    
 
     await loadAssets();
 
@@ -162,13 +204,58 @@ async function handleDelete(id) {
 
 
   return (
+
+    <>
+    <nav className="navbar navbar-dark bg-dark">
+      <div className="container">
+        <span className="navbar-brand mb-0 h1">
+          IT Asset Manager
+        </span>
+        <span className="text-white">
+          ITMD 504 Final Project
+        </span>
+      </div>
+    </nav>
+
     <main className="container py-5">
+      
 
-      <h1 className="mb-2">IT Asset Manager</h1>
+      <h1 className="display-5">
+        IT Asset Manager
+      </h1>
 
-      <p className="text-muted">
-        Simple IT Asset Inventory Web Application
+      <p className="lead">
+        Asset Inventory Management System
       </p>
+      <p className="text-muted">
+        Final Project • ITMD 504 Programming and Application Foundations
+      </p>
+      <p className="text-secondary">
+         React • Express • Azure SQL • Azure App Service
+      </p>
+
+      <p className="text-secondary">
+         Danny Riano
+      </p>
+
+
+
+
+
+
+      {
+  message && (
+
+    <div className="alert alert-success">
+
+      {message}
+
+    </div>
+
+  )
+}
+
+
 
       <div className="alert alert-success">
         Frontend application is running.
@@ -181,12 +268,24 @@ async function handleDelete(id) {
       <hr />
 
       <div className="d-flex justify-content-end mb-3">
-        <button
-          className="btn btn-primary"
-          onClick={() => setShowForm(!showForm)}
-        >
-          {showForm ? "Cancel" : "Add Asset"}
-        </button>
+<button
+  className="btn btn-primary"
+  onClick={() => {
+    setEditingAssetId(null);
+
+    setNewAsset({
+      AssetName: "",
+      Category: "",
+      SerialNumber: "",
+      Status: "",
+      Location: "",
+    });
+
+    setShowForm(true);
+  }}
+>
+  + Add Asset
+</button>
       </div>
 
 
@@ -217,6 +316,7 @@ async function handleDelete(id) {
 <input
 className="form-control"
 name="AssetName"
+placeholder="Dell Latitude 7440"
 value={newAsset.AssetName}
 onChange={handleChange}
 />
@@ -227,12 +327,42 @@ onChange={handleChange}
 
 <label className="form-label">Category</label>
 
-<input
+<select
 className="form-control"
 name="Category"
+placeholder="Laptop"
 value={newAsset.Category}
 onChange={handleChange}
-/>
+>
+<option value="">
+Select Category
+</option>
+<option>
+Laptop
+</option>
+<option>
+Desktop
+</option>
+<option>
+Switch
+</option>
+<option>
+Router
+</option>
+<option>
+Firewall
+</option>
+<option>
+Wireless
+</option>
+<option>
+Printer
+</option>
+<option>
+Monitor
+</option>
+</select>
+
 
 </div>
 
@@ -243,6 +373,7 @@ onChange={handleChange}
 <input
 className="form-control"
 name="SerialNumber"
+placeholder="DL7440-001"
 value={newAsset.SerialNumber}
 onChange={handleChange}
 />
@@ -253,12 +384,39 @@ onChange={handleChange}
 
 <label className="form-label">Status</label>
 
-<input
+<select
 className="form-control"
 name="Status"
+placeholder="Available"
 value={newAsset.Status}
 onChange={handleChange}
-/>
+
+>
+
+<option value="">
+Select Status
+</option>
+<option>
+Available
+</option>
+<option>
+Assigned
+</option>
+<option>
+In Use
+</option>
+<option>
+Maintenance
+</option>
+<option>
+Installed
+</option>
+<option>
+Retired
+</option>
+</select>
+
+
 
 </div>
 
@@ -269,21 +427,60 @@ onChange={handleChange}
 <input
 className="form-control"
 name="Location"
+placeholder="New York"
 value={newAsset.Location}
 onChange={handleChange}
 />
 
 </div>
 
+
+
+
+
+
+
+
+
 </div>
 
 <div className="mt-4">
 
-<button className="btn btn-success" onClick={handleSave}>
-{editingAssetId
-  ? "Update Asset"
-  : "Save Asset"}
-</button>
+<div className="mt-4 d-flex gap-2">
+
+  <button
+    className="btn btn-success"
+    onClick={handleSave}
+  >
+
+    {editingAssetId
+      ? "Update Asset"
+      : "Save Asset"}
+
+  </button>
+
+  <button
+    className="btn btn-secondary"
+    onClick={() => {
+
+      setShowForm(false);
+
+      setEditingAssetId(null);
+
+      setNewAsset({
+        AssetName: "",
+        Category: "",
+        SerialNumber: "",
+        Status: "",
+        Location: "",
+      });
+
+    }}
+  >
+    Cancel
+  </button>
+
+</div>
 
 </div>
 
@@ -295,6 +492,13 @@ onChange={handleChange}
 
 
       <h2 className="mb-3">IT Assets</h2>
+
+
+      <p className="text-muted">
+  Total Assets: <strong>{assets.length}</strong>
+</p>
+
+
 
       {loading ? (
         <p>Loading assets...</p>
@@ -354,7 +558,23 @@ onChange={handleChange}
         </table>
       )}
 
+<footer
+className="text-center mt-5 text-muted"
+>
+<hr />
+<p>
+© 2026 Illinois Institute of Technology
+</p>
+<p>
+ITMD 504 Programming and Application Foundations
+</p>
+<p>
+Built with React, Express, Azure SQL and Bootstrap
+</p>
+</footer>
+
     </main>
+    </>
   );
 }
 
