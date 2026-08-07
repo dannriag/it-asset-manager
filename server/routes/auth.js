@@ -20,7 +20,7 @@ router.post("/login", async (req, res) => {
         FROM Users
 
         WHERE Username=@username
-
+        AND Password=@password
       `);
 
     if (result.recordset.length === 0) {

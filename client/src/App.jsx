@@ -1,15 +1,21 @@
-import { useEffect, useState } from "react";
-import {
-  getAssets,
-  createAsset,
-  updateAsset,
-  deleteAsset,
-} from "./services/api";
-
+import { useState } from "react";
+import Login from "./components/Login";
 import AssetManager from "./components/AssetManager";
 
 function App() {
-  return <AssetManager />;
+  const [user, setUser] = useState(null);
+  if (!user) {
+    return (
+      <Login
+        onLogin={setUser}
+      />
+    );
+  }
+  return (
+    <AssetManager
+      user={user}
+    />
+  );
 }
 
 export default App;
