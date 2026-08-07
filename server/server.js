@@ -1,13 +1,27 @@
 const express = require("express");
 const path = require("path");
+const session = require("express-session");
+const authRoutes = require("./routes/auth");
 
 const app = express();
-
 const PORT = process.env.PORT || 3000;
-
 const assetRoutes = require("./routes/assets");
 
+
 app.use(express.json());
+
+app.use(
+  session({
+    name: process.env.SESSION_NAME,
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 60 * 60 * 1000, // 1 hour
+      httpOnly: true,
+    },
+  })
+);
 
 app.get("/api/health", (req, res) => {
   res.json({
@@ -16,11 +30,14 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+app.use("/api/auth", authRoutes);
+
+
 app.use("/api/assets", assetRoutes);
-// Serve the React production build
+
 app.use(express.static(path.join(__dirname, "public")));
 
-// Return React for non-API routes
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
