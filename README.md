@@ -1,19 +1,39 @@
 # IT Asset Manager
 
-IT Asset Manager is a simple web application developed for the ITMD 504 Programming and Application Foundations final project.
+IT Asset Manager is a simple web application developed as the Final Project for ITMD 504 Programming and Application Foundations.
 
-The application allows authenticated IT administrators to view, add, update, and delete IT asset records.
+## Live Application
 
-## Planned Technology Stack
+https://it-asset-manager-itmd504-c2hpdfbhghftecgf.canadacentral-01.azurewebsites.net
+
+## Technology Stack
+
+Frontend
 
 - React
 - Bootstrap
+
+Backend
+
 - Node.js
 - Express
+
+Database
+
 - Azure SQL Database
+
+Development
+
+- VS Code
+- Git
 - GitHub
-- Microsoft Azure
+- Azure DevOps
+- Figma
 
-## Project Status
+Deployment
 
-Initial development.
+- Azure App Service
+
+CI/CD
+
+- GitHub Actions (Planned)

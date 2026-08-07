@@ -5,6 +5,8 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+const assetRoutes = require("./routes/assets");
+
 app.use(express.json());
 
 app.get("/api/health", (req, res) => {
@@ -14,6 +16,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+app.use("/api/assets", assetRoutes);
 // Serve the React production build
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -21,6 +24,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
