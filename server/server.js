@@ -15,11 +15,11 @@ app.get("/api/health", (req, res) => {
 });
 
 // Serve the React production build
-app.use(express.static(path.join(__dirname, "../client/dist")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Return React for non-API routes
-app.get("/{*splat}", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(PORT, () => {
