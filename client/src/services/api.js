@@ -27,3 +27,49 @@ export async function createAsset(asset) {
 
   return await response.json();
 }
+
+
+export async function updateAsset(id, asset) {
+
+  const response = await fetch(`${API_URL}/${id}`, {
+
+    method: "PUT",
+
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify(asset),
+
+  });
+
+  if (!response.ok) {
+
+    throw new Error("Unable to update asset.");
+
+  }
+
+  return await response.json();
+
+}
+
+
+
+// Delete an asset
+export async function deleteAsset(id) {
+
+  const response = await fetch(`${API_URL}/${id}`, {
+
+    method: "DELETE",
+
+  });
+
+  if (!response.ok) {
+
+    throw new Error("Unable to delete asset.");
+
+  }
+
+  return await response.json();
+
+}

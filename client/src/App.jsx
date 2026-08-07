@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
-import { getAssets, createAsset } from "./services/api";
+import {
+  getAssets,
+  createAsset,
+  updateAsset,
+  deleteAsset,
+} from "./services/api";
 
 function App() {
   const [serverStatus, setServerStatus] = useState("Checking...");
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingAssetId, setEditingAssetId] = useState(null);
 
   const [newAsset, setNewAsset] = useState({
     AssetName: "",
@@ -60,17 +66,36 @@ async function handleSave() {
 
   try {
 
-    await createAsset(newAsset);
+    if (editingAssetId) {
+
+      await updateAsset(
+        editingAssetId,
+        newAsset
+      );
+
+    } else {
+
+      await createAsset(newAsset);
+
+    }
 
     await loadAssets();
 
     setNewAsset({
+
       AssetName: "",
+
       Category: "",
+
       SerialNumber: "",
+
       Status: "",
+
       Location: "",
+
     });
+
+    setEditingAssetId(null);
 
     setShowForm(false);
 
@@ -84,6 +109,54 @@ async function handleSave() {
 
 }
 
+function handleEdit(asset) {
+
+  setEditingAssetId(asset.AssetId);
+
+  setNewAsset({
+
+    AssetName: asset.AssetName,
+
+    Category: asset.Category,
+
+    SerialNumber: asset.SerialNumber,
+
+    Status: asset.Status,
+
+    Location: asset.Location,
+
+  });
+
+  setShowForm(true);
+
+}
+
+
+
+
+async function handleDelete(id) {
+
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this asset?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+
+    await deleteAsset(id);
+
+    await loadAssets();
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Unable to delete asset.");
+
+  }
+
+}
 
 
 
@@ -123,7 +196,13 @@ async function handleSave() {
 
 <div className="card-header">
 
-<h4>Add New Asset</h4>
+<h4>
+
+{editingAssetId
+  ? "Edit Asset"
+  : "Add New Asset"}
+
+</h4>
 
 </div>
 
@@ -201,7 +280,9 @@ onChange={handleChange}
 <div className="mt-4">
 
 <button className="btn btn-success" onClick={handleSave}>
-Save Asset
+{editingAssetId
+  ? "Update Asset"
+  : "Save Asset"}
 </button>
 
 </div>
@@ -227,6 +308,7 @@ Save Asset
               <th>Category</th>
               <th>Status</th>
               <th>Location</th>
+              <th>Actions</th>
             </tr>
           </thead>
 
@@ -245,6 +327,23 @@ Save Asset
                 <td>{asset.Status}</td>
 
                 <td>{asset.Location}</td>
+                <td>
+
+  <button
+    className="btn btn-warning btn-sm me-2"
+    onClick={() => handleEdit(asset)}
+  >
+    Edit
+  </button>
+
+  <button
+    className="btn btn-danger btn-sm"
+    onClick={() => handleDelete(asset.AssetId)}
+  >
+    Delete
+  </button>
+
+</td>
 
               </tr>
 
