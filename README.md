@@ -37,4 +37,4 @@ Deployment
 
 CI/CD
 
-- GitHub Actions (Planned)
+- GitHub Actions 
