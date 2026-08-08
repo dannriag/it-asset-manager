@@ -3,7 +3,7 @@ name: Build and Deploy IT Asset Manager
 on:
   push:
     branches:
-      - feature/github-actions
+      - main
   workflow_dispatch:
 
 jobs:
