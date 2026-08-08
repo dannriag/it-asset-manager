@@ -92,4 +92,4 @@ jobs:
           app-name: it-asset-manager-itmd504
           slot-name: Production
           package: .
-		  publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6D07DF5F529E420DA11BEF4D99AFB8AE }}
+		      publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6D07DF5F529E420DA11BEF4D99AFB8AE }}
