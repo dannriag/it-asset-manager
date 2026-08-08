@@ -82,6 +82,16 @@ function Login({ onLogin }) {
                 </button>
               </form>
               <hr />
+
+              <div className="alert alert-danger py-2 mb-3" role="alert">
+                <strong>Note:</strong> The first use may take a moment while the free Azure SQL Serverless database starts up. Please wait about 1 minute and try again if the login does not respond immediately.
+              </div>
+
+
+
+
+
+
               <small className="text-muted">
                 Demo credentials
                 <br />
